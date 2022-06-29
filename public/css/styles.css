@@ -1,0 +1,322 @@
+/*fontes*/
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* CSS HEX */
+:root {
+    --cafe-au-lait: #A58362ff;
+    --bistre-brown: #917034ff;
+    --vivid-sky-blue: #0CCBFFff;
+    --vivid-sky-blue-darker: rgb(7, 132, 167);
+    --french-sky-blue: #82B1FFff;
+    --glaucous: #6A87CBff;
+    --glaucous-darker: rgb(41, 72, 145);
+    --dark-purple: #220F2Dff;
+    --white: #FEFEFEff;
+    --pale-silver: #D3C9C1ff;
+    --heliotrope-gray: #A091A5ff;
+}
+
+body {
+    margin: 1em 2em;
+    font-size: 1.5em;
+    letter-spacing: 1px;
+    background-color: var(--french-sky-blue);
+}
+
+h1, h2, h3, h4, ul, li, a, p, input, label, button, div, footer {
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    color: var(--dark-purple);
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 120px;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+}
+
+nav li {
+    margin-left: 20px;
+}
+
+nav li a {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8em;
+    display: block;
+    padding: 20px 16px;
+    letter-spacing: 2px;
+}
+
+.btn {
+    border-radius: 36px;
+    background: var(--vivid-sky-blue);
+}
+
+form h2 {
+    font-size: 2em;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    width: 360px;
+    margin: 0 auto;
+    padding: 30px;
+    /*alinhar itens*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*/////////////*/
+    box-shadow: 1px 2px 3px var(--heliotrope-gray);
+    border-radius: 10px;
+    background: white;
+}
+
+input {
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--heliotrope-gray);
+    font-size: 1em;
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin: 20px 0 10px;
+}
+
+button {
+    margin-top: 30px;
+    border-radius: 36px;
+    background: var(--vivid-sky-blue);
+    border:0;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8em;
+    display: block;
+    padding: 10px 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    color: white;
+    background: var(--vivid-sky-blue-darker);
+}
+
+.erro {
+    color: var(--cafe-au-lait);
+    margin: 10px 2px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+header {
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    width: 250px;
+    margin-right: 40px;
+}
+
+header h2 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+header h3 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    margin-left: 2px;
+    color: var(--glaucous);
+}
+
+header .btn {
+    margin-top: 20px;
+    padding: 12px 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
+footer {
+    text-align: center;
+    margin-top: 120px;
+    color: var(--pale-silver);
+}
+
+/*
+**
+*** ATIVIDADES
+**
+*/
+
+.atividades {
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.niveis-atividade {
+    display: flex;
+    flex-direction: row;
+    margin-top: -1em;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+.nivel {
+    display: inline-block;
+    border-radius: 20px;
+    background: white;
+    position: relative;
+    text-align: center;
+    padding: 0 20px 30px 20px;
+    margin-left: 1em;
+}
+
+.nivel img{
+    width: 200px;
+    margin: -30px auto 20px;
+}
+
+.respostas {
+    display: none;
+}
+
+/*
+**
+***QUESTOES
+**
+*/
+
+.questoes {
+    width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    /*alinhar itens*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*/////////////*/
+    box-shadow: 1px 2px 3px var(--heliotrope-gray);
+    border-radius: 10px;
+    background: white;
+}
+
+/*
+**
+***EDICAO DOS DADOS
+**
+*/
+
+.formdados {
+    margin-top: -3em;
+}
+
+.titulodados {
+    font-size: 1.7em;
+    padding-bottom: 0.3em;
+    text-align: center;
+}
+
+.labeldados {
+    font-weight: 700;
+}
+
+.display {
+    word-break: break-all;
+    font-size: 1em;
+    color: var(--glaucous-darker) !important;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edicao, .cancelar {
+    margin-top: 5px;
+    display: inline;
+    border-radius: 36px;
+    background: var(--french-sky-blue);
+    font-size: 0.6em;
+    width: 45%;
+}
+
+.edicao:hover, .cancelar:hover{
+    color: white;
+    background: var(--glaucous);
+}
+
+.input, .cancelar {
+    display: none;
+}
+
+#inputsenha {
+    display: none;
+    width: 90%;
+}
+
+.olho {
+    margin: 0 auto;
+
+}
+
+#eye {
+    display: none;
+    float: right;
+    position: absolute;
+    margin-left: 6.2em;
+    margin-top: -1.6em;
+    cursor: pointer;
+    width: 2.5%;
+    height: 2.5%;
+    color: var(--dark-purple);
+    background-color: white;
+    background-size: 1em;
+}
+
+/*
+**
+*** VERIFICACAO DE ROLE
+**
+*/
+
+.role {
+    display: none;
+}
+
+/*
+**
+*** PESQUISA POR ATIVIDADE DE USUARIO
+**
+*/
+
+#erro-pesquisa {
+    font-style: italic;
+    color: white;
+    margin-left: 14em;
+    margin-top: -1.6em;
+}

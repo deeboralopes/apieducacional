@@ -1,0 +1,81 @@
+<%- include('partials/header')  -%> 
+
+<body>
+    <form>
+        <h2>Cadastro</h2>
+        <!--Cadastro usuario-->
+        <label for="usuario">Usuário</label>
+        <input type="text" name="usuario" required />
+        <div class="erro usuario"></div>
+        
+        <!--Cadastro email-->
+        <label for="email">E-mail</label>
+        <input type="email" name="email" required />
+        <div class="erro email"></div>
+
+        <!--Cadastro senha-->
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" required />
+        <div class="erro senha"></div>
+
+        <!--Botão Cadastro-->
+        <button>Cadastrar-se</button>
+
+    </form>
+</body>
+
+<script>
+    const form = document.querySelector('form');
+    const erroUsuario = document.querySelector('.erro.usuario');
+    const erroEmail = document.querySelector('.erro.email');
+    const erroSenha = document.querySelector('.erro.senha');
+
+    form.addEventListener('submit', async (event) => {
+        //prevenir que a pagina seja recerregada
+        event.preventDefault();
+
+        //limpar os erros na tela
+        erroUsuario.textContent = '';
+        erroEmail.textContent = '';
+        erroSenha.textContent = '';
+
+        //receber os valores
+        const usuario = form.usuario.value;
+        const email = form.email.value;
+        const senha = form.senha.value;
+
+        try {
+            /*
+            chamamamos o método que lida com a requisição POST
+            para a rota /cadastro 
+            */
+            const res = await fetch('/cadastro', {
+                method: 'POST',
+                body: JSON.stringify({ usuario, email, senha }),
+                headers: {'Content-Type': 'application/json'}
+            });
+            
+            
+            /*dados do json passados pelo método que trata a rota
+            como resposta 401 ou 201 */
+            const dados = await res.json();
+            console.log(dados)
+            //se houver erros no json
+            if (dados.erros) {
+                erroUsuario.textContent = dados.erros.usuario;
+                erroEmail.textContent = dados.erros.email;
+                erroSenha.textContent = dados.erros.senha;
+            }
+
+            //REDIRECIONAMENTO APÓS CADASTRO
+            if (dados.user) {
+                location.assign('/');
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })
+</script>
+
+<%- include('partials/footer')  -%> 

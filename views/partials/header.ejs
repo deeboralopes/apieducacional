@@ -1,0 +1,39 @@
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Atividades de Matemática</title>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <nav class="barra">
+            <% if (usuario && usuario.role == 'administrador') { %>
+                <h1><a href="/historico-geral">Atividades de Matemática</a></h1>
+            <% } else { %>
+                <h1><a href="/">Atividades de Matemática</a></h1>
+            <% } %>    
+
+            <ul>
+                <% if (usuario) { %>
+                    <% if (usuario.cargo == 'administrador') { %>
+                        <li><a href="/documentacao">Documentação</a></li>
+                        <li><a href="/historico-geral">Histórico Geral</a></li>
+                        <li><a href="/dados">Perfil</a></li>
+                        <li><a href="/logout">Sair</a></li>
+                    <% } else if (usuario.cargo == 'usuario') { %>
+                        <li><a href="/documentacao">Documentação</a></li>
+                        <li><a href="/atividades">Níveis</a></li>
+                        <li><a href="/historico">Histórico</a></li>
+                        <li><a href="/dados">Perfil</a></li>
+                        <li><a href="/logout">Sair</a></li>
+                    <% }
+                } else { %>
+                    <li><a href="/documentacao">Documentação</a></li>
+                    <li><a href="/login">Entrar</a></li>
+                    <li><a href="/cadastro" class="btn">Cadastrar-se</a></li>
+                <% } %>
+                
+            </ul>
+        </nav>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+Sobre o carregamento das páginas:
+
+- As vezes a conexão com o MongoDB cai, por motivos
+misteriosos, por isso, desde já fique avisado, que,
+em algum momento, pode ser que AS PÁGINAS NÃO CAR-
+REGUEM!!!
+
+Para futuras aplicações a serem desenvolvidas:
+
+- Nas funções que lidam com o método POST das rotas,
+criar uma função a parte que recebe um objeto (prova-
+velmente o usuário) que irá realizar a adição ou edição
+de informações.
+
+- Não se esquecer dos cargos para diferenciar usuários
+comuns de usuários com permissões especiais
+
+- Caprichar mais no front

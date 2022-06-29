@@ -1,0 +1,13 @@
+As funções POST das páginas:
+- Dados
+- Facil
+- Dificil
+
+Não foram implementadas pois, da forma como a aplicação foi
+feita, as funções dessas rotas precisam de um cookie, o qual 
+só está disponível quando o servidor está sendo executado e
+um usuário tiver feito login.
+
+Tentei realizar pelo menos o teste para que retornassem status
+400, porém a execução de tais testes excede o tempo limite, que
+já foi aumentado do padrão devido a execução dos outros testes.

@@ -1,0 +1,288 @@
+<%- include('partials/header') -%>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+<body>
+    <form class="formdados">
+        <h3 class="titulodados">Dados do usuário</h3>
+
+        <!--Usuario------------------------------------------------------------------>
+        <label for="usuario" class="labeldados">Usuário</label>
+        <!--Display do Usuario-->
+        <div class="display usuario">
+            <!--primeiro elemento do array de dados da resposta-->
+            <%= dados[0].usuario %>
+        </div>
+            
+
+        <!--Email-------------------------------------------------------------------->
+        <label for="email" class="labeldados">E-mail</label>
+        <!--Display do Email-->
+        <div class="display email"><%= dados[0].email %></div>
+        <!--Input Email-->
+        <input id="inputemail" type="email" class="input email" />
+        <!--Erro Email-->
+        <div class="erro email"></div>
+        <!--Botões do Email-->
+        <div class="botoes email">
+            <button class="edicao" id="btn-edit-email">Editar Email</button>
+            <button class="cancelar" id="btn-cancelar-email">Cancelar</button>
+        </div>
+
+
+        <!--Senha------------------------------------------------------------------->
+        <label for="senha" class="labeldados">Senha</label>
+        <!--Display da Senha-->
+        <div class="display senha">senha ocultada</div>
+        <!--<input type="text" value="<%= dados[0].senha %>" class="field left" readonly>-->
+        <!--Input da Senha, não podemos mostrar a senha pois foi hasheada e não pode ser desfeito-->
+        <input id="inputsenha" type="password" class="input senha" readonly />
+        <!--input value="<%= dados[0].senha %>"-->
+        <div class="olho">
+            <!--<i class="fa fa-eye" aria-hidden="true" id="eye"></i>-->
+            <svg id="eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="#294891" d="M279.6 160.4C282.4 160.1 285.2 160 288 160C341 160 384 202.1 384 256C384 309 341 352 288 352C234.1 352 192 309 192 256C192 253.2 192.1 250.4 192.4 247.6C201.7 252.1 212.5 256 224 256C259.3 256 288 227.3 288 192C288 180.5 284.1 169.7 279.6 160.4zM480.6 112.6C527.4 156 558.7 207.1 573.5 243.7C576.8 251.6 576.8 260.4 573.5 268.3C558.7 304 527.4 355.1 480.6 399.4C433.5 443.2 368.8 480 288 480C207.2 480 142.5 443.2 95.42 399.4C48.62 355.1 17.34 304 2.461 268.3C-.8205 260.4-.8205 251.6 2.461 243.7C17.34 207.1 48.62 156 95.42 112.6C142.5 68.84 207.2 32 288 32C368.8 32 433.5 68.84 480.6 112.6V112.6zM288 112C208.5 112 144 176.5 144 256C144 335.5 208.5 400 288 400C367.5 400 432 335.5 432 256C432 176.5 367.5 112 288 112z"/></svg>
+        </div>
+        
+        <!--Erro da Senha-->
+        <div class="erro senha"></div>
+        <!--Botões da Senha-->
+        <div class="botoes senha">
+            <button class="edicao" id="btn-edit-senha">Editar Senha</button>
+            <button class="cancelar" id="btn-cancelar-senha">Cancelar</button>
+        </div>
+    </div>
+        
+
+    </form>
+</body>
+
+<script>
+    const lista = document.querySelector('ul');
+    
+    const erroEmail = document.querySelector('.erro.email');
+    const erroSenha = document.querySelector('.erro.senha');
+    
+    const displayEmail = document.querySelector('.display.email');
+    const displayUsuario = document.querySelector('.display.usuario')
+    const displaySenha = document.querySelector('.display.senha');
+
+    const btnEmail = document.getElementById('btn-edit-email');
+    const btnSenha = document.getElementById('btn-edit-senha');
+    const btnCancEmail = document.getElementById('btn-cancelar-email');
+    const btnCancSenha = document.getElementById('btn-cancelar-senha');
+
+    const inputEmail = document.querySelector('.input.email');
+    const inputSenha = document.querySelector('.input.senha');
+
+    const botoesEmail = document.querySelector('.botoes.email');
+    const botoesSenha = document.querySelector('.botoes.senha');
+    const olho = document.getElementById('eye');
+
+    const conteudosenha = inputSenha.value;
+
+    //Lida com Editar e Salvar Email
+    btnEmail.addEventListener('click', async (event) => {
+        //prevenir que a pagina nao seja recarregada
+        event.preventDefault();
+        event.stopImmediatePropagation(); 
+
+        //apagar a mensagem de erro anterior
+        erroEmail.textContent = '';
+        
+        //Caso seja pedido pra editar o email
+        if(btnEmail.textContent === 'Editar Email') {
+            //sumimos com a label
+            displayEmail.style.display = "none";
+            //input aparece com conteudo da label (email)
+            inputEmail.style.display = "block";
+            inputEmail.value = displayEmail.textContent;
+            inputEmail.setAttribute('required', true);
+            //botao editar vira salvar
+            btnEmail.textContent = 'Salvar';
+            //botao cancelar aparece com
+            btnCancEmail.style.display = "inline";
+            //botoes lado a lado
+            botoesEmail.style.justifyContent = "space-around";
+            
+        } else 
+        
+        //Caso seja pedido pra salvar o email
+        if (btnEmail.textContent === 'Salvar'){
+            //Salvando edição no banco de dados ------------------------
+            try {
+                const email = inputEmail.value;
+                const senha = null;
+
+                const res = await fetch('/dados', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, senha }),
+                    headers: {'Content-Type': 'application/json'}
+                });
+                
+                
+                const dados = await res.json();
+                console.log('dados', dados);
+
+                //se houver erros no json
+                if (dados.erros) {
+                    erroEmail.textContent = dados.erros.email;
+                }
+
+                //REDIRECIONAMENTO APÓS CADASTRO
+                if (dados.usuario) {
+                    inputEmail.setAttribute('required', false);
+                    location.reload();
+                }
+            }
+            catch (err) {
+                console.log(err);
+            } 
+        }
+        
+    }); 
+
+    //Lida com cancelar a ação de editar email
+    btnCancEmail.addEventListener("click", (event) => {
+        //prevenir que a pagina nao seja recarregada
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        //apagar a mensagem de erro anterior
+        erroEmail.textContent = '';
+
+        //reaparece a label email
+        displayEmail.style.display = "block";
+        //some com o input e botao cancelar
+        inputEmail.style.display = "none";
+        btnCancEmail.style.display = "none";
+        //volta o botao para editar email
+        btnEmail.textContent = 'Editar Email';
+        //botoes ao normal
+        botoesEmail.style.justifyContent = "space-between";
+        
+    })
+
+    function validarEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    //Lida com Editar e Salvar Senha
+    btnSenha.addEventListener('click', async (event) => {
+        //prevenir que a pagina nao seja recarregada
+        event.preventDefault();
+        event.stopImmediatePropagation(); 
+        
+        //Caso seja pedido pra editar a Senha
+        if (btnSenha.textContent === 'Editar Senha') {
+            displaySenha.style.display = 'none';
+            inputSenha.style.display = 'block';
+            //inputSenha.setAttribute("required", true);
+            inputSenha.removeAttribute("readonly");
+            inputSenha.value = '';
+            //botao editar vira salvar
+            btnSenha.textContent = 'Salvar';
+            //botao cancelar aparece com
+            btnCancSenha.style.display = "inline";
+            //botoes lado a lado
+            botoesSenha.style.justifyContent = "space-around";
+            //botao mostrar senha
+            olho.style.display = "block";
+            //erro desaparece
+            erroSenha.textContent = '';
+        } else 
+        
+        //Caso seja pedido pra salvar a Senha
+        if (btnSenha.textContent === 'Salvar'){
+            erroSenha.textContent = '';
+            //const mensagem = verificarSenha();
+            //if (mensagem == '') {
+                try {
+                    const senha = inputSenha.value;
+                    const email = null;
+
+                    const res = await fetch('/dados', {
+                        method: 'POST',
+                        body: JSON.stringify({ email, senha }),
+                        headers: {'Content-Type': 'application/json'}
+                    });
+                    
+                    
+                    const dados = await res.json();
+                    console.log('dados', dados);
+
+                    //se houver erros no json
+                    if (dados.erros) {
+                        erroSenha.textContent = dados.erros.senha;
+                    }
+
+                    //REDIRECIONAMENTO APÓS CADASTRO
+                    if (dados.usuario) {
+                        displaySenha.style.display = 'block';
+                        inputSenha.setAttribute("required", false);
+                        inputSenha.style.display = 'none';
+                        btnCancSenha.style.display = "none";
+                        btnSenha.textContent = 'Editar Senha';
+                        botoesSenha.style.justifyContent = "space-between";
+                        inputSenha.setAttribute("readonly", 'true');
+                        inputSenha.setAttribute("type", 'text');
+                        inputSenha.value = conteudosenha;
+                        olho.style.display = "none";
+                        erroSenha.textContent = '';
+                        //location.reload();
+                    }
+                }
+                catch (err) {
+                    console.log(err);
+                } 
+
+            //} else {
+               // erroSenha.textContent = mensagem;
+            //}
+        }
+        
+    });
+
+    function verificarSenha() {
+        const input = inputSenha.value.toString();
+        if (input == '') {            
+            return 'Senha não pode ser vazia!';
+        } else if (input.length < 6) {
+            return 'Senha deve ter pelo menos 6 caracteres!';
+        } else {
+            return '';
+        }
+        
+    }
+
+    //Lida com cancelar a ação de editar Senha
+    btnCancSenha.addEventListener("click", (event) => {
+        //prevenir que a pagina nao seja recarregada
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        displaySenha.style.display = 'block';
+        inputSenha.setAttribute("required", false);
+        inputSenha.style.display = 'none';
+        btnCancSenha.style.display = "none";
+        btnSenha.textContent = 'Editar Senha';
+        botoesSenha.style.justifyContent = "space-between";
+        //erro desaparece
+        erroSenha.textContent = '';
+        olho.style.display = "none";
+        
+    })
+
+    var estaAparecendo = false;
+    eye.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (estaAparecendo) {
+            inputSenha.setAttribute('type', "password");
+            estaAparecendo = false;
+        } else {
+            inputSenha.setAttribute('type', "text");
+            estaAparecendo = true;
+        }
+    });
+</script>

@@ -1,0 +1,72 @@
+<%- include('partials/header')  -%> 
+
+<body>
+    <form>
+        <h2>Login</h2>
+        <!--Login usuario-->
+        <label for="usuario">Usuário</label>
+        <input type="text" name="usuario" required />
+        <div class="erro usuario"></div>
+
+        <!--Login senha-->
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" required />
+        <div class="erro senha"></div>
+
+        <!--Botão Login-->
+        <button>Entrar</button>
+
+    </form>
+</body>
+
+<script>
+    const form = document.querySelector('form');
+    const erroUsuario = document.querySelector('.erro.usuario');
+    const erroSenha = document.querySelector('.erro.senha');
+
+    form.addEventListener('submit', async (event) => {
+        //prevenir que a pagina seja recerregada
+        event.preventDefault();
+
+        //limpar os erros na tela
+        erroUsuario.textContent = '';
+        erroSenha.textContent = '';
+
+        //receber os valores
+        const usuario = form.usuario.value;
+        const senha = form.senha.value;
+
+        try {
+            /*
+            chamamamos o método que lida com a requisição POST
+            para a rota /login
+            */
+            const res = await fetch('/login', {
+                method: 'POST',
+                body: JSON.stringify({ usuario, senha }),
+                headers: {'Content-Type': 'application/json'}
+            });
+            
+            
+            /*dados do json passados pelo método que trata a rota
+            como resposta 401 ou 201 */
+            const dados = await res.json();
+            console.log(dados);
+            //se houver erros no json
+            if (dados.erros) {
+                erroUsuario.textContent = dados.erros.usuario;
+                erroSenha.textContent = dados.erros.senha;
+            }
+
+            //REDIRECIONAMENTO APÓS CADASTRO
+            if (dados.user) {
+                location.assign('/atividades');
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })
+</script>
+
+<%- include('partials/footer')  -%> 

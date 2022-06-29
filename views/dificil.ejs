@@ -1,0 +1,102 @@
+<%- include('partials/header')  -%>
+<%- include('partials/roleUsuario')  -%> 
+
+<body>
+    <form class="questoes">
+        <h2>Nível Difícil</h2>
+        <!--Questao 1-->
+        <label for="questao1">
+            <%= questoes[0].descricao %>
+        </label>
+        <input type="text" name="questao1" required />
+        <div class="erro questao 1"></div>
+        
+        <!--Questao 2-->
+        <label for="questao2">
+            <%= questoes[1].descricao %>
+        </label>
+        <input type="text" name="questao2" required />
+        <div class="erro questao 2"></div>
+
+        <!--Questao 3-->
+        <label for="questao3">
+            <%= questoes[2].descricao %>
+        </label>
+        <input type="text" name="questao3" required />
+        <div class="erro questao 3"></div>
+
+        <!--Questao 4-->
+        <label for="questao4">
+            <%= questoes[3].descricao %>
+        </label>
+        <input type="text" name="questao4" required />
+        <div class="erro questao 4"></div>
+
+        <!--Questao 5-->
+        <label for="questao5">
+            <%= questoes[4].descricao %>
+        </label>
+        <input type="text" name="questao5" required />
+        <div class="erro questao 5"></div>
+
+        <!--Botão Cadastro-->
+        <button>Enviar Resposta</button>
+
+    </form>
+    <div class="respostas">
+        <div class="r1"> <%= questoes[0]._id %> </div>
+        <div class="r2"> <%= questoes[1]._id %> </div>
+        <div class="r3"> <%= questoes[2]._id %> </div>
+        <div class="r4"> <%= questoes[3]._id %> </div>
+        <div class="r5"> <%= questoes[4]._id %> </div>
+    </div>
+</body>
+
+<script>
+    const form = document.querySelector('form');
+    const res1 = document.querySelector('.r1');
+    const res2 = document.querySelector('.r2');
+    const res3 = document.querySelector('.r3');
+    const res4 = document.querySelector('.r4');
+    const res5 = document.querySelector('.r5');
+
+    form.addEventListener('submit', async (event) => {
+        //receber os valores
+        const nivel = 'dificil';
+        const q1 = form.questao1.value;
+        const q2 = form.questao2.value;
+        const q3 = form.questao3.value;
+        const q4 = form.questao4.value;
+        const q5 = form.questao5.value;
+
+        const r1 = res1.textContent;
+        const r2 = res2.textContent;
+        const r3 = res3.textContent;
+        const r4 = res4.textContent;
+        const r5 = res5.textContent;
+
+        try {
+            /*
+            chamamamos o método que lida com a requisição POST
+            para a rota /dificil
+            */
+            const res = await fetch('/dificil', {
+                method: 'POST',
+                body: JSON.stringify({nivel, q1, q2, q3, q4, q5, r1, r2, r3, r4, r5 }),
+                headers: {'Content-Type': 'application/json'}
+            })
+
+            const dados = await res.json();
+
+            //REDIRECIONAMENTO APÓS CADASTRO
+            if (dados.resposta) {
+                location.assign('/atividades');
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })
+</script>
+
+<%- include('partials/footer')  -%> 

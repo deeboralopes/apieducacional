@@ -1,0 +1,794 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Educacional",
+        "description": "Documentação da API Educacional que fornece atividades de matemática básica para teste dos conhecimentos do usuário",
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "tags": ["Home"],
+                "responses": {
+                    "200": {
+                        "description": "View Home carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possível carregar a view Home"
+                    }
+                }
+            }
+        },
+        "/cadastro": {
+            "get": {
+                "tags": ["Cadastro"],
+                "responses": {
+                    "200": {
+                        "description": "View Cadastro carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possível carregar a view Cadastro"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Cadastro"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "usuario": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "usuario": "carla",
+                                    "email": "carla@carla.com",
+                                    "senha": "carlinha"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado, retorna o id do usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "user": "ObjectId('62a88bac2e850f3b6b278977')"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao criar usuário, retorna erro para cada campo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "usuario": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "senha": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "usuario":"O usuário já está sendo utilizado",
+                                        "email":"",
+                                        "senha":""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "get": {
+                "tags": ["Login"],
+                "responses": {
+                    "200": {
+                        "description": "View Login carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possivel carregar a view Login"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Login"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "usuario": {
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "usuario": "maria",
+                                    "senha": "mariazinha"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário conectado, retorna o id do usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "user": "ObjectId('62a88bac2e850f3b6b278977')"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao realizar o login, retorna os erros para cada campo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "usuario": {
+                                            "type": "string"
+                                        },
+                                        "senha": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "usuario": "O usuário não existe",
+                                        "senha": ""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/atividades": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Atividades"],
+                "responses": {
+                    "200": {
+                        "description": "View Atividades carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possivel carregar a view Atividades"
+                    }
+                }
+            }
+        },
+        "/facil": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Atividades"],
+                "responses": {
+                    "200": {
+                        "description": "View Facil carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possivel carregar a view Facil"
+                    }
+                }
+            },
+            "post": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Atividades"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nivel": {
+                                        "type": "string"
+                                    },
+                                    "q1": {
+                                        "type": "string"
+                                    },
+                                    "q2": {
+                                        "type": "string"
+                                    },
+                                    "q3": {
+                                        "type": "string"
+                                    },
+                                    "q4": {
+                                        "type": "string"
+                                    },
+                                    "q5": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "nivel": "facil",
+                                    "q1": 276,
+                                    "q2": 54,
+                                    "q3": 4800,
+                                    "q4": 16,
+                                    "q5": 45
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Atividade enviada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resposta": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "example": {
+                                        "resposta": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao enviar atividade"
+                    },
+                    "401": {
+                        "description": "Envie todos os campos e tente novamente!"
+                    }
+                }
+            }
+        },
+        "/dificil": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Atividades"],
+                "responses": {
+                    "200": {
+                        "description": "View Dificil carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possivel carregar a view Dificil"
+                    }
+                }
+            },
+            "post": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Atividades"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nivel": {
+                                        "type": "string"
+                                    },
+                                    "q1": {
+                                        "type": "string"
+                                    },
+                                    "q2": {
+                                        "type": "string"
+                                    },
+                                    "q3": {
+                                        "type": "string"
+                                    },
+                                    "q4": {
+                                        "type": "string"
+                                    },
+                                    "q5": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "nivel": "dificil",
+                                    "q1": 33,
+                                    "q2": 369,
+                                    "q3": 3024,
+                                    "q4": 24,
+                                    "q5": 24
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Atividade enviada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resposta": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "example": {
+                                        "resposta": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao enviar atividade"
+                    },
+                    "401": {
+                        "description": "Envie todos os campos e tente novamente!"
+                    }
+                }
+            }
+        },
+        "/dados": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Dados"],
+                "responses": {
+                    "200": {
+                        "description": "View Dados carregada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "usuario": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "senha": {
+                                            "type": "string"
+                                        },
+                                        "__V": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "_id": "ObjectId(62a88bac2e850f3b6b278977)",
+                                        "usuario": "maria",
+                                        "email": "maria@maria.com",
+                                        "senha": "$2b$10$kZriDHvClC2UsG.ejP/oYOm1eTz4kVSuA/Q2kIeMRb1fadrvePpa6",
+                                        "__V": 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao buscar dados do usuário"
+                    }
+                }
+            },
+            "post": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Dados"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "email": "maria@marizinha.com",
+                                    "senha": "senhadamaria"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Dados alterados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "usuario": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "senha": {
+                                            "type": "string"
+                                        },
+                                        "cargo": {
+                                            "type": "string"
+                                        },
+                                        "__v": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "_id": "ObjectId(62a88bac2e850f3b6b278977)",
+                                    "usuario": "maria",
+                                    "email": "maria@maria.com",
+                                    "senha": "$2b$10$kZriDHvClC2UsG.ejP/oYOm1eTz4kVSuA/Q2kIeMRb1fadrvePpa6",
+                                    "__V": 0
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao editar usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "senha": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "email":"E-mail não pode ser vazio!",
+                                    "senha":"A senha não pode ser vazia!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/historico": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Histórico"],
+                "responses": {
+                    "200": {
+                        "description": "View Histórico carregada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "properties": {
+                                        "atividades": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "nivel": {
+                                                        "type": "string"
+                                                    },
+                                                    "usuario": {
+                                                        "type": "string"
+                                                    },
+                                                    "erros": {
+                                                        "type": "number"
+                                                    },
+                                                    "acertos": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "resumo": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "total": {
+                                                        "type": "string"
+                                                    },
+                                                    "acertosFacil": {
+                                                        "type": "string"
+                                                    },
+                                                    "errosFacil": {
+                                                        "type": "string"
+                                                    },
+                                                    "acertosDificil": {
+                                                        "type": "string"
+                                                    },
+                                                    "errosDificil": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "atividades": {
+                                            "atividade 1": {
+                                                    "_id": "ObjetcId(62a88b862e850f3b6b27896d)",
+                                                    "nivel": "facil",
+                                                    "usuario": "debora",
+                                                    "erros": 0,
+                                                    "acertos": 5,
+                                                    "__v": 0
+                                            },
+                                            "atividade 2": {
+                                                    "_id": "ObjetcId(62a88b962e850f3b6b278974)",
+                                                    "nivel": "dificil",
+                                                    "usuario": "debora",
+                                                    "erros": 0,
+                                                    "acertos": 5,
+                                                    "__v": 0
+                                            }   
+                                        },
+                                        "resumo": {
+                                            "total": 2,
+                                            "acertosFacil": 5,
+                                            "errosFacil": 0,
+                                            "acertosDificil": 5,
+                                            "errosDificil": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao buscar histórico de atividades"
+                    }
+                }
+            }
+        },
+        "/historico-geral": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Histórico"],
+                "responses": {
+                    "200": {
+                        "description": "View Histórico-Geral carregada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "atividades": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "nivel": {
+                                                        "type": "string"
+                                                    },
+                                                    "usuario": {
+                                                        "type": "string"
+                                                    },
+                                                    "erros": {
+                                                        "type": "number"
+                                                    },
+                                                    "acertos": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "atividades": {
+                                            "atividade 1": {
+                                                    "_id": "ObjetcId(62a88b862e850f3b6b27896d)",
+                                                    "nivel": "facil",
+                                                    "usuario": "debora",
+                                                    "erros": 0,
+                                                    "acertos": 5,
+                                                    "__v": 0
+                                            },
+                                            "atividade 2": {
+                                                    "_id": "ObjetcId(62a88b962e850f3b6b278974)",
+                                                    "nivel": "dificil",
+                                                    "usuario": "debora",
+                                                    "erros": 0,
+                                                    "acertos": 5,
+                                                    "__v": 0
+                                            },
+                                            "atividade 3": {
+                                                "_id": "ObjetcId(62aa363e81e61745631497e4)",
+                                                "nivel": "facil",
+                                                "usuario": "maria",
+                                                "erros": 5,
+                                                "acertos": 0,
+                                                "__v": 0
+                                            },
+                                            "atividade 4": {
+                                                "_id": "ObjetcId(62aa364781e61745631497ee)",
+                                                "nivel": "dificil",
+                                                "usuario": "maria",
+                                                "erros": 5,
+                                                "acertos": 0,
+                                                "__v": 0
+                                            }
+                                        }  
+                                        },
+                                        "resumo": {
+                                            "total": 2,
+                                            "acertosFacil": 5,
+                                            "errosFacil": 0,
+                                            "acertosDificil": 5,
+                                            "errosDificil": 0
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "400": {
+                            "description": "Erro ao buscar histórico de atividades"
+                        }
+                    }
+            },
+            "post": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Histórico"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "usuario": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "usuario": "maria"
+                            }
+                            
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Histórico do usuário carregado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "total": {
+                                            "type": "string"
+                                        },
+                                        "acertosFacil": {
+                                            "type": "string"
+                                        },
+                                        "errosFacil": {
+                                            "type": "string"
+                                        },
+                                        "acertosDificil": {
+                                            "type": "string"
+                                        },
+                                        "errosDificil": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "total": 3,
+                                    "acertosFacil": 5,
+                                    "errosFacil": 5,
+                                    "acertosDificil": 0,
+                                    "errosDificil": 5
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao carregar histórico do usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "pesquisa": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "pesquisa": "Usuário não existe!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "security": [{"bearerAuth": []}],
+                "tags": ["Logout"],
+                "responses": {
+                    "200": {
+                        "description": "Conta desconectada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao desconectar conta"
+                    }
+                }
+            }
+        },
+        "/documentacao": {
+            "get": {
+                "tags": ["Documentação"],
+                "responses": {
+                    "200": {
+                        "description": "View Documentação carregada"
+                    },
+                    "400": {
+                        "description": "Não foi possível carregar a Documentação da API"
+                    }
+                }
+            }
+        }
+    }
+}

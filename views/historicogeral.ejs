@@ -1,0 +1,248 @@
+<%- include('partials/header') -%>
+<%- include('partials/roleAdmin')  -%> 
+
+<link rel="stylesheet" href="/css/tabela.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+<div class="barraResumo">
+    <div class="pesquisa">
+        <input type="text" class="barra-de-pesquisa" placeholder="Pesquisar por usuário ...">
+        <button type="button" class="botao-pesquisar">
+        <i class="fa fa-search"></i>
+        </button>
+    </div>
+
+    <div class="erro pesquisa" id="erro-pesquisa"></div>
+
+    <table class='resumo-usuario-pesquisado' cellspacing="0">
+        <thead>
+            <tr>            
+                <th colspan="3" id="nome-do-usuario"></th>
+            </tr>
+            <tr>            
+                <th colspan="3" id="total-de-atividades"></th>
+            </tr>
+            <tr class="first-child">
+                <th>Nível</th>
+                <th>Acertos</th>
+                <th>Erros</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> Fácil </td>
+                <td id="acertos-facil"></td>
+                <td id="erros-facil"></td>
+            </tr>
+            <tr>
+                <td> Difícil </td>
+                <td id="acertos-dificil">  </td>
+                <td id="erros-dificil">  </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="tabela-atividades">
+    <h2 class="titulo">Histórico de Atividades</h2>
+
+    <table cellspacing="0">
+        <thead>
+            <tr class="first-child">
+                <th>Usuário</th>
+                <th>Nível</th>
+                <th>Acertos</th>
+                <th>Erros</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% atividades[0].reverse().forEach(atividade => { %>
+                <tr>
+                    <td> <%= atividade.usuario %> </td>
+                    <td> <%= atividade.nivel %> </td>
+                    <td> <%= atividade.acertos %> </td>
+                    <td> <%= atividade.erros %> </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const erroPesquisa = document.querySelector('.erro.pesquisa');
+    const inputPesquisa = document.querySelector('.barra-de-pesquisa');
+    const botaoPesquisa = document.querySelector('.botao-pesquisar');
+
+    const tabelaResumo = document.querySelector('.resumo-usuario-pesquisado');
+
+    const nomeUsuario = document.getElementById('nome-do-usuario');
+    const totalAtividades = document.getElementById('total-de-atividades');
+    const acertosFacil = document.getElementById('acertos-facil');
+    const errosFacil = document.getElementById('erros-facil');
+    const acertosDificil = document.getElementById('acertos-dificil');
+    const errosDificil = document.getElementById('erros-dificil');
+
+    botaoPesquisa.addEventListener('click', async (event) => {
+        erroPesquisa.textContent = '';
+        const filtro = inputPesquisa.value.toLowerCase();
+        const tabela = document.querySelector('.tabela-atividades');
+        const tr = tabela.getElementsByTagName('tr');
+        var td, i, conteudo;
+
+        try {
+            const usuario = filtro;
+            /*
+            chamamamos o método que lida com a requisição POST
+            para a rota /historico-geral
+            */
+            const res = await fetch('/historico-geral', {
+                method: 'POST',
+                body: JSON.stringify({ usuario: usuario }),
+                headers: {'Content-Type': 'application/json'}
+            }).catch(error => console.dir(error));
+            
+            /*dados do json passados pelo método que trata a rota
+            como resposta 401 ou 201 */
+            const dados = await res.json();
+            //console.log(dados);
+
+            if(dados.resumo) {
+                console.log('entrei');
+                //inserir as informações na tabela de resumo
+                tabelaResumo.style.display = "table";
+                nomeUsuario.textContent = 'Usuário: ' + usuario;
+                totalAtividades.textContent = 'Atividades desenvolvidas: ' + dados.resumo.total;
+                acertosFacil.textContent = dados.resumo.acertosFacil;
+                errosFacil.textContent = dados.resumo.errosFacil;
+                acertosDificil.textContent = dados.resumo.acertosDificil;
+                errosDificil.textContent = dados.resumo.errosDificil;
+
+                const filtro = inputPesquisa.value.toLowerCase();
+                const tabela = document.querySelector('.tabela-atividades');
+                const tr = tabela.getElementsByTagName('tr');
+                var td, i, conteudo;
+
+                // Loop pela tabela escondendo linhas que não contém o mesmo
+                //usuario da pesquisa
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        conteudo = td.textContent || td.innerText;
+                        if (conteudo.toLowerCase().indexOf(filtro) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            //se houver erros no json
+            if (dados.erros) {
+                erroPesquisa.textContent = dados.erros;
+                tabelaResumo.style.display = "none";
+
+                const tr = tabela.getElementsByTagName('tr');
+                var td, i, conteudo;
+
+                // Loop pela tabela escondendo linhas que não contém o mesmo
+                //usuario da pesquisa
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        tr[i].style.display = "";
+
+                    }
+                }
+            }
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+        
+    });
+
+    inputPesquisa.addEventListener('keypress', async function(event) {
+        erroPesquisa.textContent = '';
+        if (event.key === "Enter") {
+            erroPesquisa.textContent = '';
+            const filtro = inputPesquisa.value.toLowerCase();
+            const tabela = document.querySelector('.tabela-atividades');
+            const tr = tabela.getElementsByTagName('tr');
+            var td, i, conteudo;
+
+            try {
+                const usuario = filtro;
+                /*
+                chamamamos o método que lida com a requisição POST
+                para a rota /historico-geral
+                */
+                const res = await fetch('/historico-geral', {
+                    method: 'POST',
+                    body: JSON.stringify({ usuario: usuario }),
+                    headers: {'Content-Type': 'application/json'}
+                }).catch(error => console.dir(error));
+                
+                /*dados do json passados pelo método que trata a rota
+                como resposta 401 ou 201 */
+                const dados = await res.json();
+                //console.log(dados);
+
+                if(dados.resumo) {
+                    console.log('entrei');
+                    //inserir as informações na tabela de resumo
+                    tabelaResumo.style.display = "table";
+                    nomeUsuario.textContent = 'Usuário: ' + usuario;
+                    totalAtividades.textContent = 'Atividades desenvolvidas: ' + dados.resumo.total;
+                    acertosFacil.textContent = dados.resumo.acertosFacil;
+                    errosFacil.textContent = dados.resumo.errosFacil;
+                    acertosDificil.textContent = dados.resumo.acertosDificil;
+                    errosDificil.textContent = dados.resumo.errosDificil;
+
+                    const filtro = inputPesquisa.value.toLowerCase();
+                    const tabela = document.querySelector('.tabela-atividades');
+                    const tr = tabela.getElementsByTagName('tr');
+                    var td, i, conteudo;
+
+                    // Loop pela tabela escondendo linhas que não contém o mesmo
+                    //usuario da pesquisa
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            conteudo = td.textContent || td.innerText;
+                            if (conteudo.toLowerCase().indexOf(filtro) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
+                }
+
+                //se houver erros no json
+                if (dados.erros) {
+                    erroPesquisa.textContent = dados.erros;
+                    tabelaResumo.style.display = "none";
+
+                    const tr = tabela.getElementsByTagName('tr');
+                    var td, i, conteudo;
+
+                    // Loop pela tabela escondendo linhas que não contém o mesmo
+                    //usuario da pesquisa
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            tr[i].style.display = "";
+                        }
+                    }
+                }
+
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+    });
+
+</script>

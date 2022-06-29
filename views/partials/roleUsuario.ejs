@@ -1,0 +1,16 @@
+<% if (usuario) { %> 
+    <% if (usuario.role == 'administrador') { %>
+        <label class="role">Administrador</label>
+    <% } %>
+    <% if (usuario.role == 'usuario') { %>
+        <label class="role">Usuario</label>
+    <% } %>
+<% } %>
+
+<script>
+    const role = document.querySelector('.role');
+
+    if (role.textContent == 'Administrador') {
+        location.replace('/historico-geral');
+    }
+</script>
